@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "gptsemantichybrid"
+version = "0.1.0"
+description = ""
+authors = ["Ajmain-Inqiad <ajmaininqiadalam@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openai = "^0.26.5"
+javalang = "^0.13.0"
+clr = "^1.0.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
