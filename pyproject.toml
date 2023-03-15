@@ -11,6 +11,7 @@ python = "^3.9"
 openai = "^0.26.5"
 javalang = "^0.13.0"
 clr = "^1.0.3"
+pandas = "^1.5.3"
 
 
 [build-system]

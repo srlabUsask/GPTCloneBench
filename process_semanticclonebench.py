@@ -2,6 +2,7 @@ from typing import Optional
 import openai
 import glob
 import javalang as jl
+import time
 
 
 def get_java_start_end_for_node(
@@ -186,7 +187,7 @@ def generate_code(
         output_file_name (str): output file location
     """
 
-    for _ in range(0, 2):
+    for _ in range(0, 1):
         num_results = 1
         completion = openai.Completion.create(
             engine=model_engine,
@@ -202,6 +203,8 @@ def generate_code(
 
             with open(output_file_name, "a+") as f:
                 f.write(response)
+
+        time.sleep(1)
 
 
 def generate_description(
@@ -248,70 +251,78 @@ def process_all_files(
     lookup: str,
 ):
     for file in all_files:
-        print("\n\n =======================input file: ", file)
-        if output_file_type == "java":
-            code_prompt = process_java_code(file)
-        else:
-            code_prompt = process_other_code(lookup, file, output_file_type)
+        try:
+            print("\n\n =======================input file: ", file)
+            if output_file_type == "java":
+                code_prompt = process_java_code(file)
+            else:
+                code_prompt = process_other_code(lookup, file, output_file_type)
 
-        # Set up the OpenAI API client
-        openai.api_key = "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"
+            # Set up the OpenAI API client
+            # openai.api_key = "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" # for c
+            openai.api_key = "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"
 
-        # Set up the model and prompt
-        model_engine = "text-davinci-003"
-        prompt = (
-            "Give me type 3, type 4 code clone variants of following code: \n"
-            + code_prompt
-        )
-        initial_input = "#input \n" + code_prompt + "\n#====================\n"
-        output_main = initial_input + "#gpt output=============\n"
-        output_file_name = (
-            output_loc
-            + "Gpt3D_"
-            + file.split("/")[-1].split(".")[0]
-            + "."
-            + output_file_type
-        )
-        with open(output_file_name, "a+") as f:
-            f.write(output_main)
-        log_input = (
-            "\n\n =======================input file: " + file + "\n" + initial_input
-        )
-        with open(log_file_name, "a+") as f:
-            f.write(log_input)
+            # Set up the model and prompt
+            model_engine = "text-davinci-003"
+            prompt = (
+                "Give me different python, c, java implementation for the following code: \n"
+                + code_prompt
+            )
+            initial_input = "#input \n" + code_prompt + "\n#====================\n"
+            output_main = initial_input + "#gpt output=============\n"
+            output_file_name = (
+                output_loc
+                + "Gpt3D_"
+                + file.split("/")[-1].split(".")[0]
+                + "."
+                + output_file_type
+            )
+            with open(output_file_name, "a+") as f:
+                f.write(output_main)
+            log_input = (
+                "\n\n =======================input file: " + file + "\n" + initial_input
+            )
+            with open(log_file_name, "a+") as f:
+                f.write(log_input)
 
-        generate_description(log_file_name, output_loc, file, code_prompt, model_engine)
+            # generate_description(
+            #     log_file_name, output_loc, file, code_prompt, model_engine
+            # )
+            time.sleep(1)
+            print("prompt: \n", prompt)
+            generate_code(log_file_name, model_engine, prompt, output_file_name)
 
-        print("prompt: \n", prompt)
-        generate_code(log_file_name, model_engine, prompt, output_file_name)
-
-        break
+        except Exception as e:
+            print("[Error Happened] {} file processing: {}".format(file, e))
+            continue
 
 
 # ============ java prompt process ===================
 # input_loc = "Semantic Benchmark/Java/Stand Alone Clones"
 # file_type = "java"
 # lookup = "main"
-# output_loc = "gptclonedata/java/"
-# log_file = "java_gpt_raw_output.log"
+# output_loc = "distinctiveGpt3/java/"
+# log_file = "java_distinctive_gpt_raw_output.log"
 # all_files = read_all_files(input_loc, file_type)
 # process_all_files(all_files, log_file, output_loc, file_type, lookup)
 
 # ============ CS prompt process ===================
-# input_loc = "Semantic Benchmark/CS/Stand alone CLones"
-# file_type = "cs"
-# lookup = "main"
-# output_loc = "gptclonedata/CS/"
-# log_file = "cs_gpt_raw_output.log"
-# all_files = read_all_files(input_loc)
-# process_all_files(all_files, log_file, output_loc, file_type, lookup)
+input_loc = "Semantic Benchmark/CS/Stand alone CLones"
+file_type = "cs"
+lookup = "main"
+output_loc = (
+    "/home/nut749/Downloads/GptCloneBench/GptSemanticHybrid/cross_language/cs_to_other/"
+)
+log_file = "cl_cs_gpt_raw_output.log"
+all_files = read_all_files(input_loc)
+process_all_files(all_files, log_file, output_loc, file_type, lookup)
 
 # ============ C prompt process ===================
 # input_loc = "Semantic Benchmark/C/Stand Alone CLones"
 # file_type = "c"
 # lookup = "main"
-# output_loc = "gptclonedata/C/"
-# log_file = "c_gpt_raw_output.log"
+# output_loc = "distinctiveGpt3/c/"
+# log_file = "c_distinctive_gpt_raw_output.log"
 # all_files = read_all_files(input_loc)
 # process_all_files(all_files, log_file, output_loc, file_type, lookup)
 
