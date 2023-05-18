@@ -1,0 +1,14 @@
+[config]
+type4_cap = 50
+type3_cap = 75
+target_lang = py
+input_dir = distinctiveGpt3/
+dest_type3 = /home/nut749/Downloads/GptCloneBench/GptSemanticHybrid/py_51_to_75_similar_distinctive
+dest_type4 = /home/nut749/Downloads/GptCloneBench/GptSemanticHybrid/py_leq_50_similar_distinctive
+nicad_output = test_nicad/
+ignore_list = distinctive_ignore.txt
+semantic_output = py_dist_semantic_data.csv
+raw_output = py_dist_raw_results.csv
+nicad_loc = /home/nut749/Downloads/softwares/NiCad-6.2/
+nicad_folder = test
+ignore_file_list = distinctive_ignore.txt
