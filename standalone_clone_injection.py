@@ -10,7 +10,7 @@ def extract_file(file: str, type: str) -> list[str, str]:
         type (str): which type of code to be injected
 
     Returns:
-        tuple(str, str): 1st code fragment and 2nd code fragment
+        tuple(str, str): 1st code fragment and 2nd code fragments
     """
 
     text_file = open(file, "r", encoding="utf-8", errors="ignore")
