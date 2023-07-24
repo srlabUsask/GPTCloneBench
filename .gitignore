@@ -12,3 +12,4 @@ test_nicad/
 !.gitignore
 !distinctive_config.txt
 !type34_config.txt
+gpt4clonedata/
