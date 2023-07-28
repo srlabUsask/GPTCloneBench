@@ -6,7 +6,7 @@ import pandas as pd
 import os
 from pathlib import Path
 import ast
-import ConfigParser
+import configparser
 
 
 def delete_folder(folder: str):
@@ -62,12 +62,27 @@ def find_all_func_lines(file_loc: str) -> list:
 
     file_line = open(file_loc, "r")
     gpt_output_found = False
+    text_file = open(file_loc, "r")
+    all_lines = text_file.readlines()
     type3_lines = []
     type3_start = -1
     function_found = 0
     type3_start = -1
-    check = ["}\n", " }\n", "} \n", " } \n", "  } \n", "  }\n"]
+    check = [
+        "}\n",
+        " }\n",
+        "} \n",
+        " } \n",
+        "  } \n",
+        "  }\n",
+        "}.start();\n",
+        "}.start(); \n",
+        "}).start();\n",
+        "}).start(); \n",
+    ]
+    final_num = -1
     for num, line in enumerate(file_line, 0):
+        final_num = num
         if "#gpt output=============" in line or "# gpt output=============" in line:
             gpt_output_found = True
             type3_start = num + 2
@@ -81,6 +96,11 @@ def find_all_func_lines(file_loc: str) -> list:
                 if line in check:
                     type3_lines.append([type3_start, num + 1])
                     type3_start = num + 2
+    if len(type3_lines) == 9:
+        if final_num + 1 == len(all_lines) and (
+            type3_start != len(all_lines) or type3_start + 1 != len(all_lines)
+        ):
+            type3_lines.append([type3_start, final_num + 1])
     return type3_lines
 
 
@@ -197,7 +217,6 @@ def find_all_py_func_lines(file_loc: str) -> list:
             file_line = open(output_file_name, "r")
             for n, l in enumerate(file_line, 0):
                 if l.startswith("def "):
-                    print(l)
                     start_line.append(n)
                 last_line = n
             for i in range(0, len(start_line) - 1):
@@ -250,14 +269,14 @@ def create_ignore_list(file: str) -> list[str]:
 
 
 def main():
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.readfp(open(r"distinctive_config.txt"))
     target_lang = config.get("config", "target_lang")
     input_dir = config.get("config", "input_dir")
     nicad_output = config.get("config", "nicad_output")
     nicad_folder = config.get("config", "nicad_folder")
     dest_type3 = config.get("config", "dest_type3")
-    dest_type4 = config.get("config", "dest_type3")
+    dest_type4 = config.get("config", "dest_type4")
     semantic_output = config.get("config", "semantic_output")
     raw_output = config.get("config", "raw_output")
     ignore_file_list = config.get("config", "ignore_file_list")
@@ -278,10 +297,12 @@ def main():
     semantic_data = pd.DataFrame(columns=["file", "similarity"])
     raw_results = pd.DataFrame(columns=["input", "output", "similarity"])
     ignored_file = create_ignore_list(ignore_file_list)
+    print("ignored_file: \n", ignored_file)
     total_processed_file = 0
 
     for file in all_files:
         print("============================")
+        print("file: ", file)
         if file.split("/")[-1] in ignored_file:
             print("Skipping file: ", file)
             continue
@@ -291,6 +312,10 @@ def main():
             type3_lines = find_all_func_lines(file)
         else:
             type3_lines = find_all_py_func_lines(file)
+
+        print("type3_lines: ", type3_lines)
+        if len(type3_lines) != 10:
+            print("%%%%%%%%%%%%%%%%%%%%%%%Not equal 10")
 
         if len(type3_lines) <= 0:
             print("[ERROR Happened] : No type function")
@@ -350,21 +375,28 @@ def main():
                     if any(i.startswith(s) for s in start_with):
                         for idx in start_with:
                             i = i.replace(idx, "", 1)
+                    if "```c" in i.lower():
+                        i = i.lower().replace("```c", "", 1)
+                    elif "```cpp" in i.lower():
+                        i = i.lower().replace("```cpp", "", 1)
+                    elif "```c++" in i.lower():
+                        i = i.lower().replace("```c++", "", 1)
+                    elif "```" in i:
+                        i = i.replace("```", "", 1)
                     f.write(i)
             file_create_counter += 1
 
         command = (
             "cd "
             + nicad_loc
-            + "./nicad6 functions "
+            + "; ./nicad6 functions "
             + target_lang
             + " "
             + os.path.abspath(os.getcwd())
             + "/"
             + nicad_output
-            + "/"
             + target_lang
-            + "_test default"
+            + "_test default-report"
         )
         ret = subprocess.run(command, capture_output=True, shell=True)
         tree = None
@@ -387,7 +419,7 @@ def main():
             similarity = []
             if child.tag == "clone":
                 found_similarity = int(child.attrib["similarity"])
-                if found_similarity <= type3_cap:
+                if float(found_similarity) <= float(type3_cap):
                     file_list = []
                     input_file_found = False
                     input_file_index = -1
@@ -411,6 +443,7 @@ def main():
                     file_list.insert(0, file_list.pop(input_index))
 
                     for f in file_list:
+                        print("f: ", f)
                         file_line = open(f, "r")
                         all_lines = file_line.readlines()
                         for l in all_lines:
@@ -424,7 +457,7 @@ def main():
                         + target_lang
                     )
                     location = ""
-                    if found_similarity > type4_cap:
+                    if float(found_similarity) > float(type4_cap):
                         output_file_name = dest_type3 + "/" + file_name
                         pair_counter += 1
                         location = output_file_name
@@ -432,7 +465,7 @@ def main():
                         with open(output_file_name, "w") as f:
                             f.write(all_code)
 
-                    if found_similarity <= type4_cap:
+                    if float(found_similarity) <= float(type4_cap):
                         output_file_name = dest_type4 + "/" + file_name
                         pair_counter += 1
                         location = output_file_name
@@ -490,7 +523,9 @@ def main():
                         found_similarity,
                     ]
         delete_folder(nicad_output + "/")
-
     semantic_data.to_csv(semantic_output, index=False)
     raw_results.to_csv(raw_output, index=False)
     print("total_processed_file: ", total_processed_file)
+
+
+main()

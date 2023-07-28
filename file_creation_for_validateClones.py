@@ -4,8 +4,53 @@ import re
 import argparse
 
 
+# def create_c_files(folder_loc: list, save_file_loc: str) -> None:
+#     """create c files for validateClone
+
+#     Args:
+#         folder_loc (list): all folders
+#         save_file_loc (str): saving file location
+
+#     """
+
+#     for folder in folder_loc:
+#         all_files = sorted(glob.glob(folder + "/*.c"))
+#         all_content = ""
+
+#         for file in all_files:
+#             new_file_content = "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+#             file_name = file.split("/")[-1]
+#             file_info = file_name.split("_")
+#             tool_id = int(re.findall(r"\d+", file_info[1])[0])
+#             clone_id = int(re.findall(r"\d+", file_info[2])[0])
+
+#             text_file = open(file, "r")
+#             lines = text_file.readlines()
+#             code = ""
+#             brac_loc = []
+#             count = -1
+#             for line in lines:
+#                 count += 1
+#                 if line == "\n":
+#                     continue
+#                 code += line
+#                 if line == "}\n" or line == "} \n":
+#                     code += "----------------------------------------\n\n"
+#                     brac_loc.append(count)
+#             first_file = file_name + " " + str(1) + " " + str(brac_loc[0] + 1)
+#             second_file = (
+#                 file_name + " " + str(brac_loc[0] + 2) + " " + str(brac_loc[1] + 1)
+#             )
+#             new_file_content += "\n{}\n{}\n{}\n{}\n----------------------------------------\n\n{}".format(
+#                 tool_id, clone_id, first_file, second_file, code
+#             )
+#             all_content += new_file_content
+#         with open(save_file_loc, "a+") as f:
+#             f.write(all_content)
+
+
 def create_c_files(folder_loc: list, save_file_loc: str) -> None:
-    """create c files for validateClone
+    """create java files for validateClone
 
     Args:
         folder_loc (list): all folders
@@ -17,7 +62,21 @@ def create_c_files(folder_loc: list, save_file_loc: str) -> None:
         all_files = sorted(glob.glob(folder + "/*.c"))
         all_content = ""
 
+        check = [
+            "}\n",
+            " }\n",
+            "} \n",
+            " } \n",
+            "  } \n",
+            "  }\n",
+            "}.start();\n",
+            "}.start(); \n",
+            "}).start();\n",
+            "}).start(); \n",
+        ]
+
         for file in all_files:
+            print(file)
             new_file_content = "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
             file_name = file.split("/")[-1]
             file_info = file_name.split("_")
@@ -29,14 +88,26 @@ def create_c_files(folder_loc: list, save_file_loc: str) -> None:
             code = ""
             brac_loc = []
             count = -1
+
+            new_line_counter = 0
+            sperator_found = False
+
             for line in lines:
                 count += 1
-                if line == "\n":
-                    continue
-                code += line
-                if line == "}\n" or line == "} \n":
+                if not sperator_found and new_line_counter > 2:
                     code += "----------------------------------------\n\n"
                     brac_loc.append(count)
+                    new_line_counter = 0
+                    sperator_found = True
+                if count == len(lines) or count + 1 == len(lines):
+                    code += "----------------------------------------\n\n"
+                    brac_loc.append(count)
+                if line == "\n":
+                    new_line_counter += 1
+                    continue
+                code += line
+                # if line in check:
+                #     # if line == "}\n" or line == "} \n":
             first_file = file_name + " " + str(1) + " " + str(brac_loc[0] + 1)
             second_file = (
                 file_name + " " + str(brac_loc[0] + 2) + " " + str(brac_loc[1] + 1)
@@ -62,7 +133,21 @@ def create_java_files(folder_loc: list, save_file_loc: str) -> None:
         all_files = sorted(glob.glob(folder + "/*.java"))
         all_content = ""
 
+        check = [
+            "}\n",
+            " }\n",
+            "} \n",
+            " } \n",
+            "  } \n",
+            "  }\n",
+            "}.start();\n",
+            "}.start(); \n",
+            "}).start();\n",
+            "}).start(); \n",
+        ]
+
         for file in all_files:
+            print(file)
             new_file_content = "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
             file_name = file.split("/")[-1]
             file_info = file_name.split("_")
@@ -74,14 +159,26 @@ def create_java_files(folder_loc: list, save_file_loc: str) -> None:
             code = ""
             brac_loc = []
             count = -1
+
+            new_line_counter = 0
+            sperator_found = False
+
             for line in lines:
                 count += 1
-                if line == "\n":
-                    continue
-                code += line
-                if line == "}\n" or line == "} \n":
+                if not sperator_found and new_line_counter > 2:
                     code += "----------------------------------------\n\n"
                     brac_loc.append(count)
+                    new_line_counter = 0
+                    sperator_found = True
+                if count == len(lines) or count + 1 == len(lines):
+                    code += "----------------------------------------\n\n"
+                    brac_loc.append(count)
+                if line == "\n":
+                    new_line_counter += 1
+                    continue
+                code += line
+                # if line in check:
+                #     # if line == "}\n" or line == "} \n":
             first_file = file_name + " " + str(1) + " " + str(brac_loc[0] + 1)
             second_file = (
                 file_name + " " + str(brac_loc[0] + 2) + " " + str(brac_loc[1] + 1)
@@ -107,7 +204,21 @@ def create_cs_files(folder_loc: list, save_file_loc: str) -> None:
         all_files = sorted(glob.glob(folder + "/*.cs"))
         all_content = ""
 
+        check = [
+            "}\n",
+            " }\n",
+            "} \n",
+            " } \n",
+            "  } \n",
+            "  }\n",
+            "}.start();\n",
+            "}.start(); \n",
+            "}).start();\n",
+            "}).start(); \n",
+        ]
+
         for file in all_files:
+            print(file)
             new_file_content = "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
             file_name = file.split("/")[-1]
             file_info = file_name.split("_")
@@ -119,14 +230,26 @@ def create_cs_files(folder_loc: list, save_file_loc: str) -> None:
             code = ""
             brac_loc = []
             count = -1
+
+            new_line_counter = 0
+            sperator_found = False
+
             for line in lines:
                 count += 1
-                if line == "\n":
-                    continue
-                code += line
-                if line == "}\n" or line == "} \n" or line == " } \n":
+                if not sperator_found and new_line_counter > 2:
                     code += "----------------------------------------\n\n"
                     brac_loc.append(count)
+                    new_line_counter = 0
+                    sperator_found = True
+                if count == len(lines) or count + 1 == len(lines):
+                    code += "----------------------------------------\n\n"
+                    brac_loc.append(count)
+                if line == "\n":
+                    new_line_counter += 1
+                    continue
+                code += line
+                # if line in check:
+                #     # if line == "}\n" or line == "} \n":
             first_file = file_name + " " + str(1) + " " + str(brac_loc[0] + 1)
             second_file = (
                 file_name + " " + str(brac_loc[0] + 2) + " " + str(brac_loc[1] + 1)
@@ -151,7 +274,7 @@ def create_py_files(folder_loc: list, save_file_loc: str) -> None:
     for folder in folder_loc:
         all_files = sorted(glob.glob(folder + "/*.py"))
         all_content = ""
-
+        count = 0
         for file in all_files:
             new_file_content = "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
             file_name = file.split("/")[-1]
@@ -164,11 +287,14 @@ def create_py_files(folder_loc: list, save_file_loc: str) -> None:
             code = ""
             brac_loc = []
             count = -1
+            def_found = []
             for line in lines:
                 count += 1
                 if line.lstrip().startswith("def "):
-                    code += "----------------------------------------\n\n"
-                    brac_loc.append(count)
+                    def_found.append(True)
+                    if len(def_found) <= 2:
+                        code += "----------------------------------------\n\n"
+                        brac_loc.append(count)
                 if line == "\n":
                     continue
 
@@ -179,6 +305,7 @@ def create_py_files(folder_loc: list, save_file_loc: str) -> None:
                 tool_id, clone_id, first_file, second_file, code
             )
             all_content += new_file_content
+            count += 1
         with open(save_file_loc, "w") as f:
             f.write(all_content)
 
