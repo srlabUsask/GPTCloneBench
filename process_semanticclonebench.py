@@ -187,24 +187,29 @@ def generate_code(
         output_file_name (str): output file location
     """
 
-    for _ in range(0, 1):
-        num_results = 1
-        completion = openai.Completion.create(
-            engine=model_engine,
-            prompt=prompt,
-            max_tokens=3500,
-            n=num_results,
-        )
+    # for _ in range(0, 1):
+    completion = openai.ChatCompletion.create(
+        model="gpt-4", messages=[{"role": "user", "content": prompt}]
+    )
 
-        for num_out_gpt in range(0, num_results):
-            response = completion.choices[num_out_gpt].text + "\n\n"
-            with open(log_file_name, "a+") as f:
-                f.write(response)
+    # num_results = 1
+    # completion = openai.Completion.create(
+    #     engine=model_engine,
+    #     prompt=prompt,
+    #     max_tokens=3500,
+    #     n=num_results,
+    # )
 
-            with open(output_file_name, "a+") as f:
-                f.write(response)
+    # for num_out_gpt in range(0, num_results):
+    # response = completion.choices[num_out_gpt].text + "\n\n"
+    response = completion.choices[0].message["content"]
+    with open(log_file_name, "a+") as f:
+        f.write(response)
 
-        time.sleep(1)
+    with open(output_file_name, "a+") as f:
+        f.write(response)
+
+    time.sleep(1)
 
 
 def generate_description(
@@ -258,21 +263,19 @@ def process_all_files(
             else:
                 code_prompt = process_other_code(lookup, file, output_file_type)
 
-            # Set up the OpenAI API client
-            # openai.api_key = "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" # for c
-            openai.api_key = "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"
+            openai.api_key = "YOUR KEY"
 
             # Set up the model and prompt
             model_engine = "text-davinci-003"
             prompt = (
-                "Give me different python, c, java implementation for the following code: \n"
+                "Give me Java, C and Python implementation for the following code. Only code, no explanation: \n"
                 + code_prompt
             )
             initial_input = "#input \n" + code_prompt + "\n#====================\n"
             output_main = initial_input + "#gpt output=============\n"
             output_file_name = (
                 output_loc
-                + "Gpt3D_"
+                + "Gpt4D_"
                 + file.split("/")[-1].split(".")[0]
                 + "."
                 + output_file_type
@@ -288,7 +291,7 @@ def process_all_files(
             # generate_description(
             #     log_file_name, output_loc, file, code_prompt, model_engine
             # )
-            time.sleep(1)
+            # time.sleep(1)
             print("prompt: \n", prompt)
             generate_code(log_file_name, model_engine, prompt, output_file_name)
 
@@ -301,8 +304,8 @@ def process_all_files(
 # input_loc = "Semantic Benchmark/Java/Stand Alone Clones"
 # file_type = "java"
 # lookup = "main"
-# output_loc = "distinctiveGpt3/java/"
-# log_file = "java_distinctive_gpt_raw_output.log"
+# output_loc = "gpt4clonedata/cross_java_to_other/"
+# log_file = "gpt4clonedata/cross_java_to_other/a_java_gpt_4_raw_output_to_other.log"
 # all_files = read_all_files(input_loc, file_type)
 # process_all_files(all_files, log_file, output_loc, file_type, lookup)
 
@@ -310,10 +313,8 @@ def process_all_files(
 input_loc = "Semantic Benchmark/CS/Stand alone CLones"
 file_type = "cs"
 lookup = "main"
-output_loc = (
-    "/home/nut749/Downloads/GptCloneBench/GptSemanticHybrid/cross_language/cs_to_other/"
-)
-log_file = "cl_cs_gpt_raw_output.log"
+output_loc = "gpt4clonedata/cross_cs_to_other/"
+log_file = "gpt4clonedata/cross_cs_to_other/a_cs_gpt_4_raw_output_to_other.log"
 all_files = read_all_files(input_loc)
 process_all_files(all_files, log_file, output_loc, file_type, lookup)
 
@@ -321,8 +322,8 @@ process_all_files(all_files, log_file, output_loc, file_type, lookup)
 # input_loc = "Semantic Benchmark/C/Stand Alone CLones"
 # file_type = "c"
 # lookup = "main"
-# output_loc = "distinctiveGpt3/c/"
-# log_file = "c_distinctive_gpt_raw_output.log"
+# output_loc = "gpt4clonedata/c/"
+# log_file = "gpt4clonedata/c/a_c_gpt_4_raw_output_distinctive.log"
 # all_files = read_all_files(input_loc)
 # process_all_files(all_files, log_file, output_loc, file_type, lookup)
 
@@ -330,7 +331,7 @@ process_all_files(all_files, log_file, output_loc, file_type, lookup)
 # input_loc = "Semantic Benchmark/Python/Stand alone clones"
 # file_type = "py"
 # lookup = "def"
-# output_loc = "gptclonedata/python/"
-# log_file = "python_gpt_raw_output.log"
+# output_loc = "gpt4clonedata/python/"
+# log_file = "gpt4clonedata/python/a_python_gpt_4_raw_output_distinctive.log"
 # all_files = read_all_files(input_loc, file_type)
 # process_all_files(all_files, log_file, output_loc, file_type, lookup)
