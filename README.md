@@ -71,7 +71,7 @@ BibTex for the GPTCloneBench (initial version):
   author={Alam, Ajmain Inqiad and Roy, Palash Ranjan and Al-omari, Farouq and Roy, Chanchal Kumar and Roy, Banani and Schneider, Kevin},
   booktitle={Proceedings of the 39th International Conference in Software Maintenance and Evolution (ICSME 2023)},
   year={2023},
-  organization={September 2023, Bogota, Colombia (to appear)}
+  organization={October 2023, Bogota, Colombia (to appear)}
 }
 ```
 
