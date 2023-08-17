@@ -1,5 +1,6 @@
 import os
 import argparse
+import configparser
 
 
 def get_input_lines(file: str, dir_loc: str) -> list[int, int]:
@@ -210,7 +211,7 @@ def get_c_lines(file: str, dir_loc: str) -> list[int, int]:
     return c_lines
 
 
-def get_java_lines(file: str, dir_loc: str) -> list[int, int]:
+def get_java_or_cs_lines(file: str, dir_loc: str, input_type: str) -> list[int, int]:
     """get java or c# code fragments from input
 
     Args:
@@ -231,18 +232,32 @@ def get_java_lines(file: str, dir_loc: str) -> list[int, int]:
     So in code_starts we have used c#. When to convert c# to c, java and python
     change code_starts value to java
     """
-    code_starts = [
-        "C#",
-        "c#",
-        "// C#",
-        "// c#",
-        "//C#",
-        "//c#",
-        "# C#",
-        "# c#",
-        "#C#",
-        "#c#",
-    ]
+    if input_type == "java":
+        code_starts = [
+            "C#",
+            "c#",
+            "// C#",
+            "// c#",
+            "//C#",
+            "//c#",
+            "# C#",
+            "# c#",
+            "#C#",
+            "#c#",
+        ]
+    else:
+        code_starts = [
+            "Java",
+            "java",
+            "// Java",
+            "// java",
+            "//Java",
+            "//java",
+            "# Java",
+            "# java",
+            "#Java",
+            "#java",
+        ]
 
     # get input lines
     java_lines = []
@@ -258,12 +273,13 @@ def get_java_lines(file: str, dir_loc: str) -> list[int, int]:
     return java_lines
 
 
-def get_lines_details(file: str, dir_loc: str) -> dict:
+def get_lines_details(file: str, dir_loc: str, input_type: str) -> dict:
     """get line number of each type of code fragment to extract
 
     Args:
         file (str): file location
         dir_loc (str): dir location
+        input_type (str): input language type
 
     Returns:
         dict: line number of each type of code fragment
@@ -283,9 +299,13 @@ def get_lines_details(file: str, dir_loc: str) -> dict:
     lines["c"] = c_lines
 
     # get java or c#
-    java_lines = get_java_lines(file, dir_loc)
-    lines["cs"] = java_lines
-    # lines["java"] = java_lines
+    java_lines = get_java_or_cs_lines(file, dir_loc, input_type)
+    if input_type == "java":
+        lines["cs"] = java_lines
+    elif input_type == "cs":
+        lines["java"] = java_lines
+    else:
+        lines["unknown"] = java_lines
 
     return lines
 
@@ -343,42 +363,21 @@ def create_ignore_list(file: str) -> list[str]:
     return ignore_list
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Create cross language clone files!")
+def cross_language_main(config_location: str):
+    config = configparser.ConfigParser()
+    config.readfp(open(r"" + config_location))
+    input_loc = config.get("config", "input_loc")
+    output_loc = config.get("config", "output_loc")
+    ignored_files = config.get("config", "ignored_files")
+    input_type = config.get("config", "input_type").lower()
 
-    # defining arguments for parser object
-    parser.add_argument(
-        "-i",
-        "--input_loc",
-        type=str,
-        nargs=1,
-        metavar="input_loc",
-        help="Input folder location where raw clones are saved",
-    )
+    if input_type not in ["java", "cs"]:
+        print(
+            "Input type is not defined from Java or CS. By default we are selecting Java"
+        )
+        input_type = "java"
 
-    parser.add_argument(
-        "-o",
-        "--output_loc",
-        type=str,
-        nargs=1,
-        metavar="output_loc",
-        help="Output folder location where all processed clones will be saved",
-    )
-
-    parser.add_argument(
-        "-d",
-        "--discard",
-        type=str,
-        nargs=1,
-        metavar="discard",
-        help="Location of text file where ignore list is given for raw clone files",
-    )
-
-    args = parser.parse_args()
-    input_loc = str(args.input_loc[0])
-    output_loc = str(args.output_loc[0])
-
-    ignore = create_ignore_list(str(args.discard[0]))
+    ignore = create_ignore_list(ignored_files)
     files = sorted(os.listdir(input_loc))
 
     for file in files:
@@ -387,9 +386,12 @@ def main():
         all_lines = get_lines_details(file)
 
         create_cs_to_py_file(input_loc, output_loc, file, all_lines, "py")
-        create_cs_to_py_file(input_loc, output_loc, file, all_lines, "cs")
-        # create_cs_to_py_file(input_loc, output_loc, file, all_lines, "java")
+        if input_type == "java":
+            create_cs_to_py_file(input_loc, output_loc, file, all_lines, "cs")
+        else:
+            create_cs_to_py_file(input_loc, output_loc, file, all_lines, "java")
         create_cs_to_py_file(input_loc, output_loc, file, all_lines, "c")
 
 
-main()
+if __name__ == "__main__":
+    cross_language_main("cross_language_process_config.txt")

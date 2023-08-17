@@ -268,9 +268,9 @@ def create_ignore_list(file: str) -> list[str]:
     return ignore_list
 
 
-def main():
+def run_nicad_main(config_location: str):
     config = configparser.ConfigParser()
-    config.readfp(open(r"distinctive_config.txt"))
+    config.readfp(open(r"" + config_location))
     target_lang = config.get("config", "target_lang")
     input_dir = config.get("config", "input_dir")
     nicad_output = config.get("config", "nicad_output")
@@ -312,10 +312,6 @@ def main():
             type3_lines = find_all_func_lines(file)
         else:
             type3_lines = find_all_py_func_lines(file)
-
-        print("type3_lines: ", type3_lines)
-        if len(type3_lines) != 10:
-            print("%%%%%%%%%%%%%%%%%%%%%%%Not equal 10")
 
         if len(type3_lines) <= 0:
             print("[ERROR Happened] : No type function")
@@ -528,4 +524,5 @@ def main():
     print("total_processed_file: ", total_processed_file)
 
 
-main()
+if __name__ == "__main__":
+    run_nicad_main("distinctive_config.txt")

@@ -1,0 +1,7 @@
+[config]
+input_loc = [SemanticCloneBench standalone clone location]
+file_type = [targeted file type: c/cs/java/py]
+lookup = [which function to look for in SemanticCloneBench, usually "main"]
+output_loc = [output folder location where the clones will be saved]
+log_file = [output log file]
+openai_api = [OpenAI API key]

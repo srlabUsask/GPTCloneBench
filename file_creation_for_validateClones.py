@@ -380,4 +380,5 @@ def main():
         create_java_files(input_folders, output_loc)
 
 
-main()
+if __name__ == "__main__":
+    main()

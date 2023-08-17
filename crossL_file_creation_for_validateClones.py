@@ -60,37 +60,6 @@ def create_java_files(folder_loc: list, save_file_loc: str) -> None:
 
     ignore_list = []
 
-    # ignore_list = [
-    #     "Gpt3D_Clone100.java",
-    #     "Gpt3D_Clone104.java",
-    #     "Gpt3D_Clone118.java",
-    #     "Gpt3D_Clone119.java",
-    #     "Gpt3D_Clone436.java",
-    #     "Gpt3D_Clone438.java",
-    #     "Gpt3D_Clone440.java",
-    #     "Gpt3D_Clone482.java",
-    #     "Gpt3D_Clone483.java",
-    #     "Gpt3D_Clone484.java",
-    #     "Gpt3D_Clone485.java",
-    #     "Gpt3D_Clone502.java",
-    #     "Gpt3D_Clone514.java",
-    #     "Gpt3D_Clone638.java",
-    #     "Gpt3D_Clone683.java",
-    #     "Gpt3D_Clone710.java",
-    #     "Gpt3D_Clone751.java",
-    #     "Gpt3D_Clone839.java",
-    #     "Gpt3D_Clone885.java",
-    #     "Gpt3D_Clone89.java",
-    #     "Gpt3D_Clone91.java",
-    #     "Gpt3D_Clone94.java",
-    #     "Gpt3D_Clone96.java",
-    #     "Gpt3D_Clone98.java",
-    #     "Gpt3D_Clone982.java",
-    #     "Gpt3D_Clone987.java",
-    #     "Gpt3D_Clone994.java",
-    #     "Gpt3D_Clone998.java",
-    # ]
-
     for folder in folder_loc:
         all_files = sorted(glob.glob(folder + "/*.java"))
         all_content = ""
@@ -396,11 +365,9 @@ def create_java_files(folder_loc: list, save_file_loc: str) -> None:
                 tool_id, clone_id, first_file, second_file, code
             )
 
-            print(new_file_content)
-            # break
-        #     all_content += new_file_content
-        # with open(save_file_loc, "a+") as f:
-        #     f.write(all_content)
+            all_content += new_file_content
+        with open(save_file_loc, "a+") as f:
+            f.write(all_content)
 
 
 def create_cs_files(folder_loc: list, save_file_loc: str) -> None:
@@ -411,20 +378,7 @@ def create_cs_files(folder_loc: list, save_file_loc: str) -> None:
         save_file_loc (str): saving file location
 
     """
-
-    ignore_list = [
-        "Gpt3D_Clone179.cs",
-        "Gpt3D_Clone534.cs",
-        "Gpt3D_Clone535.cs",
-        "Gpt3D_Clone536.cs",
-        "Gpt3D_Clone548.cs",
-        "Gpt3D_Clone609.cs",
-        "Gpt3D_Clone724.cs",
-        "Gpt3D_Clone759.cs",
-        "Gpt3D_Clone775.cs",
-        "Gpt3D_Clone794.cs",
-        "Gpt3D_Clone846.cs",
-    ]
+    ignore_list = []
 
     for folder in folder_loc:
         all_files = sorted(glob.glob(folder + "/*.cs"))
@@ -693,10 +647,9 @@ def create_cs_files(folder_loc: list, save_file_loc: str) -> None:
                 tool_id, clone_id, first_file, second_file, code
             )
 
-            print(new_file_content)
-        #     all_content += new_file_content
-        # with open(save_file_loc, "a+") as f:
-        #     f.write(all_content)
+            all_content += new_file_content
+        with open(save_file_loc, "a+") as f:
+            f.write(all_content)
 
 
 def create_py_files(folder_loc: list, save_file_loc: str) -> None:
@@ -817,4 +770,5 @@ def main():
         create_java_files(input_folders, output_loc)
 
 
-main()
+if __name__ == "__main__":
+    main()

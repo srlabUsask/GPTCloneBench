@@ -3,6 +3,7 @@ import openai
 import glob
 import javalang as jl
 import time
+import configparser
 
 
 def get_java_start_end_for_node(
@@ -254,6 +255,7 @@ def process_all_files(
     output_loc: str,
     output_file_type: str,
     lookup: str,
+    openai_api: str,
 ):
     for file in all_files:
         try:
@@ -263,7 +265,7 @@ def process_all_files(
             else:
                 code_prompt = process_other_code(lookup, file, output_file_type)
 
-            openai.api_key = "YOUR KEY"
+            openai.api_key = openai_api
 
             # Set up the model and prompt
             model_engine = "text-davinci-003"
@@ -300,38 +302,19 @@ def process_all_files(
             continue
 
 
-# ============ java prompt process ===================
-# input_loc = "Semantic Benchmark/Java/Stand Alone Clones"
-# file_type = "java"
-# lookup = "main"
-# output_loc = "gpt4clonedata/cross_java_to_other/"
-# log_file = "gpt4clonedata/cross_java_to_other/a_java_gpt_4_raw_output_to_other.log"
-# all_files = read_all_files(input_loc, file_type)
-# process_all_files(all_files, log_file, output_loc, file_type, lookup)
+def process_semanticbench_main(config_location: str):
+    config = configparser.ConfigParser()
+    config.readfp(open(r"" + config_location))
+    input_loc = config.get("config", "input_loc")
+    file_type = config.get("config", "file_type")
+    lookup = config.get("config", "lookup")
+    output_loc = config.get("config", "output_loc")
+    log_file = config.get("config", "log_file")
+    openai_api = config.get("config", "openai_api")
+    all_files = read_all_files(input_loc)
+    process_all_files(all_files, log_file, output_loc, file_type, lookup, openai_api)
+    print("Fetching result from GPT is finished")
 
-# ============ CS prompt process ===================
-input_loc = "Semantic Benchmark/CS/Stand alone CLones"
-file_type = "cs"
-lookup = "main"
-output_loc = "gpt4clonedata/cross_cs_to_other/"
-log_file = "gpt4clonedata/cross_cs_to_other/a_cs_gpt_4_raw_output_to_other.log"
-all_files = read_all_files(input_loc)
-process_all_files(all_files, log_file, output_loc, file_type, lookup)
 
-# ============ C prompt process ===================
-# input_loc = "Semantic Benchmark/C/Stand Alone CLones"
-# file_type = "c"
-# lookup = "main"
-# output_loc = "gpt4clonedata/c/"
-# log_file = "gpt4clonedata/c/a_c_gpt_4_raw_output_distinctive.log"
-# all_files = read_all_files(input_loc)
-# process_all_files(all_files, log_file, output_loc, file_type, lookup)
-
-# ============ python prompt process ===================
-# input_loc = "Semantic Benchmark/Python/Stand alone clones"
-# file_type = "py"
-# lookup = "def"
-# output_loc = "gpt4clonedata/python/"
-# log_file = "gpt4clonedata/python/a_python_gpt_4_raw_output_distinctive.log"
-# all_files = read_all_files(input_loc, file_type)
-# process_all_files(all_files, log_file, output_loc, file_type, lookup)
+if __name__ == "__main__":
+    process_semanticbench_main("process_semanticbench_config.txt")

@@ -12,4 +12,6 @@ test_nicad/
 !.gitignore
 !distinctive_config.txt
 !type34_config.txt
+!cross_language_process_config.txt
+!process_semanticbench_config.txt
 gpt4clonedata/
