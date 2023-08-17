@@ -15,3 +15,4 @@ test_nicad/
 !cross_language_process_config.txt
 !process_semanticbench_config.txt
 gpt4clonedata/
+!requirements.txt

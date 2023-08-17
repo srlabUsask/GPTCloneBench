@@ -1,0 +1,6 @@
+openai
+javalang
+clr
+pandas
+click
+configparser

@@ -1,6 +1,6 @@
 [config]
-input_loc = 
-output_loc = 
-ignored_files = 
-input_type = cs
+input_loc = [location of SemanticCloneBench specific standalone language folder]
+output_loc = [location to save GPT generated clones]
+ignored_files = [txt file location where you want which file to ignore]
+input_type = [java/cs]
 
