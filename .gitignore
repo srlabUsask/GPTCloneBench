@@ -16,3 +16,4 @@ test_nicad/
 !process_semanticbench_config.txt
 gpt4clonedata/
 !requirements.txt
+!standalone.zip
