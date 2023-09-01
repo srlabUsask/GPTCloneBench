@@ -57,9 +57,9 @@ To generate semantic clone, follow the following steps:
      
      Email: dipikaayshi@gmail.com
 
-  6. Jayse Cai
+  6. Chi Cai
      
-     Email: ctc261@mail.usask.ca
+     GitHub id: 68583124, Email: tungjhi@gmail.com
 
 ## License
 Benchmark: The benchmark is distributed under the Creative Commons, Attribution-NonCommercial-NoDerivatives.  This license includes the benchmark database and its derivatives.  For attribution, please cite this page, and our publications below.  This data is provided free of charge for non-commercial and academic benchmarking and experimentation use.  If you would like to contribute to the benchmark, please contact us.  If you believe you intended usage may be restricted by the license, please contact us and we can discuss the possibilities.
