@@ -17,3 +17,4 @@ test_nicad/
 gpt4clonedata/
 !requirements.txt
 !standalone.zip
+!cross_language.zip
