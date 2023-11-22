@@ -1,7 +1,7 @@
 # GptCloneBench
 GPTCloneBench is a clone detection benchmark based on SemanticCloneBench [1] and GPT [2,3,4,5]. This work is accepted at ICSME2023 conference.
 
-Please find the benchmark here: https://shorturl.at/owxJM
+Please find the benchmark here: https://doi.org/10.5281/zenodo.10198952
 
 ## System requirement
 
