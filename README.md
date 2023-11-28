@@ -1,4 +1,4 @@
-# GptCloneBench
+# GPTCloneBench
 GPTCloneBench is a clone detection benchmark based on SemanticCloneBench [1] and GPT [2,3,4,5]. This work is accepted at ICSME2023 conference.
 
 Please find the semantic clones (stand-alone + system injected clones) here: https://doi.org/10.5281/zenodo.10198952
