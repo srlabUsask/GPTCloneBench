@@ -1,5 +1,5 @@
 # GPTCloneBench
-GPTCloneBench is a clone detection benchmark based on SemanticCloneBench [1] and GPT [2,3,4,5]. This work is accepted at ICSME2023 conference.
+GPTCloneBench is a clone detection benchmark based on SemanticCloneBench [1] and GPT [2,3,4,5]. This work is accepted at the ICSME2023 conference. We published another study following similar methodologies of GPTCloneBench named "Unveiling the potential of large language models in generating semantic and cross-language clones" in IWSC2023.
 
 Please find the semantic clones (stand-alone + system injected clones) here: https://doi.org/10.5281/zenodo.10198952
 
@@ -69,8 +69,8 @@ To generate semantic clone, follow the following steps:
      GitHub id: 68583124, Email: tungjhi@gmail.com
 
 ## License
-Benchmark: The benchmark is distributed under the Creative Commons, Attribution-NonCommercial-NoDerivatives.  This license includes the benchmark database and its derivatives.  For attribution, please cite this page, and our publications below.  This data is provided free of charge for non-commercial and academic benchmarking and experimentation use.  If you would like to contribute to the benchmark, please contact us.  If you believe you intended usage may be restricted by the license, please contact us and we can discuss the possibilities.
-BibTex for the GPTCloneBench (initial version):
+Benchmark: The benchmark is distributed under the Creative Commons, Attribution-NonCommercial-NoDerivatives.  This license includes the benchmark database and its derivatives.  For attribution, please cite this page and our publications below.  This data is provided free of charge for non-commercial and academic benchmarking and experimentation use.  If you would like to contribute to the benchmark, please contact us.  If you believe your intended usage may be restricted by the license, please contact us, and we can discuss the possibilities.
+BibTex for the GPTCloneBench (initial version) and Unveiling the potential of large language models in generating semantic and cross-language clones:
 
 ```
 @inproceedings{gptclonebench2023,
@@ -79,6 +79,13 @@ BibTex for the GPTCloneBench (initial version):
   booktitle={Proceedings of the 39th International Conference in Software Maintenance and Evolution (ICSME 2023)},
   year={2023},
   organization={October 2023, Bogota, Colombia (to appear)}
+}
+
+@article{roy2023unveiling,
+  title={Unveiling the potential of large language models in generating semantic and cross-language clones},
+  author={Roy, Palash R and Alam, Ajmain I and Al-omari, Farouq and Roy, Banani and Roy, Chanchal K and Schneider, Kevin A},
+  journal={arXiv preprint arXiv:2309.06424},
+  year={2023}
 }
 ```
 
