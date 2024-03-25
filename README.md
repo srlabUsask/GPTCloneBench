@@ -81,12 +81,17 @@ BibTex for the GPTCloneBench (initial version) and Unveiling the potential of la
   organization={October 2023, Bogota, Colombia (to appear)}
 }
 
-@article{roy2023unveiling,
-  title={Unveiling the potential of large language models in generating semantic and cross-language clones},
-  author={Roy, Palash R and Alam, Ajmain I and Al-omari, Farouq and Roy, Banani and Roy, Chanchal K and Schneider, Kevin A},
-  journal={arXiv preprint arXiv:2309.06424},
-  year={2023}
-}
+@INPROCEEDINGS{10473618,
+  author={Roy, Palash R. and Alam, Ajmain I. and Al-omari, Farouq and Roy, Banani and Roy, Chanchal K. and Schneider, Kevin A.},
+  booktitle={2023 IEEE 17th International Workshop on Software Clones (IWSC)}, 
+  title={Unveiling the Potential of Large Language Models in Generating Semantic and Cross-Language Clones}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={22-28},
+  keywords={Computer languages;Codes;Statistical analysis;Conferences;Semantics;Cloning;Linguistics;Language Models;Software Clone;Semantic Clone;Cross-language Clone;GPT;Semantic-CloneBench;Software Engineering},
+  doi={10.1109/IWSC60764.2023.00011}}
+
 ```
 
 ## Contact
