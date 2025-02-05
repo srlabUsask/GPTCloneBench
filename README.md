@@ -81,7 +81,7 @@ BibTex for the GPTCloneBench (initial version) and Unveiling the potential of la
   organization={October 2023, Bogota, Colombia (to appear)}
 }
 
-@INPROCEEDINGS{10473618,
+@INPROCEEDINGS{RoyGPT2023,
   author={Roy, Palash R. and Alam, Ajmain I. and Al-omari, Farouq and Roy, Banani and Roy, Chanchal K. and Schneider, Kevin A.},
   booktitle={2023 IEEE 17th International Workshop on Software Clones (IWSC)}, 
   title={Unveiling the Potential of Large Language Models in Generating Semantic and Cross-Language Clones}, 
